@@ -22,7 +22,7 @@ async def main() -> None:
 
     from . import handlers
 
-    LOGGER.info("All modules loaded. Bot is up and running.")
+    LOGGER.info("Bot is up and running by Team Arc")
 
     await clones.load_all()
 
