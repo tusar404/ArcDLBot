@@ -216,7 +216,7 @@ class InlineSearch:
             thumb_url=thumb,
             input_message_content=InputTextMessageContent(body),
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text("btn_download", lang), callback_data=f"idl:{token}")], keyboards.updates_channel_row(lang)]
+                [[InlineKeyboardButton(text("btn_download", lang), callback_data=f"idl:{token}")]]
             ),
         )
 
