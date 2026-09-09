@@ -3,8 +3,11 @@
 
 
 import os
+import sys
 
 from dotenv import load_dotenv
+
+from .. import LOGGER
 
 load_dotenv()
 
@@ -26,6 +29,24 @@ class Config:
             int(x) for x in os.getenv("SUDO_USERS", "").replace(" ", "").split(",") if x
         }
         self.sudo_users.add(self.owner_id)
+
+        self.require_all({
+            "API_ID": self.api_id,
+            "API_HASH": self.api_hash,
+            "BOT_TOKEN": self.bot_token,
+            "API_URL": self.api_url,
+            "API_KEY": self.api_key,
+            "MONGO_URI": self.mongo_uri,
+            "OWNER_ID": self.owner_id,
+        })
+
+    def require_all(self, values: dict) -> None:
+        missing = [name for name, value in values.items() if not value]
+        if not missing:
+            return
+        LOGGER.error("Missing required environment variable(s): %s", ", ".join(missing))
+        LOGGER.error("Copy sample.env to .env and fill these in before starting the bot.")
+        sys.exit(1)
 
 
 config = Config()
