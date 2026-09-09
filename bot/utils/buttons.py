@@ -3,6 +3,7 @@
 
 import re
 
+from pyrogram.enums import ButtonStyle
 from pyrogram.types import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -78,7 +79,11 @@ class KeyboardBuilder:
 
     def start_keyboard(self, bot_username: str, lang: str = default_lang) -> InlineKeyboardMarkup:
         return InlineKeyboardMarkup([
-            [InlineKeyboardButton(text("btn_add_to_group", lang), url=f"https://t.me/{bot_username}?startgroup=true")],
+            [InlineKeyboardButton(
+                text("btn_add_to_group", lang),
+                url=f"https://t.me/{bot_username}?startgroup=true",
+                style=ButtonStyle.PRIMARY,
+            )],
             self.updates_channel_row(lang),
         ])
 
