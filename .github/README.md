@@ -97,6 +97,10 @@ Inline mode and inline feedback are **not** enabled automatically on a freshly c
 git clone https://github.com/tusar404/ArcDLBot.git
 cd ArcDLBot
 
+# ffmpeg (and ffprobe) — required by bot/dl/ffmpeg.py
+sudo apt update && sudo apt install -y ffmpeg
+# macOS: brew install ffmpeg   |   Windows: choco install ffmpeg
+
 pip3 install -U -r requirements.txt
 
 cp sample.env .env
@@ -134,6 +138,29 @@ Cloning relies on Telegram's managed-bot (Business Bots) capability:
 
 1. Message [@BotFather](https://t.me/BotFather)
 2. Enable managed bots for your bot so it can request and receive tokens for bots created on its behalf
+
+## 🐳 Docker
+
+`ffmpeg` and all Python dependencies are installed inside the image, so there's nothing to install on the host beyond Docker itself.
+
+```bash
+git clone https://github.com/tusar404/ArcDLBot.git
+cd ArcDLBot
+
+cp sample.env .env
+vi .env
+
+docker compose up -d --build
+```
+
+This starts the bot alongside a local MongoDB container and persists `downloads/` and Mongo's data as volumes. Already running your own Mongo (e.g. Atlas)? Point `MONGO_URI` in `.env` at it, then remove the `mongo` service and its `depends_on` line from `docker-compose.yml` — see the comment at the top of that file.
+
+To build and run the image directly instead of via compose:
+
+```bash
+docker build -t arc-dl-bot .
+docker run -d --restart unless-stopped --env-file .env -v $(pwd)/downloads:/app/downloads arc-dl-bot
+```
 
 ## 📁 Project structure
 
