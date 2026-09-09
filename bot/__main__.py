@@ -7,12 +7,11 @@ from contextlib import suppress
 
 from pyrogram import idle
 
-from . import LOGGER, __bot_name__, __version__, app, mongo, setup_directories, yt_api
+from . import LOGGER, app, mongo, setup_directories, yt_api
 from .core.clones import clones
 
 
 async def main() -> None:
-    LOGGER.info("Starting %s v%s...", __bot_name__, __version__)
 
     setup_directories()
     await mongo.connect()
