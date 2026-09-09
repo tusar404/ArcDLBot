@@ -4,7 +4,7 @@
 
 from pyrogram import filters
 from pyrogram.handlers import MessageHandler
-from pyrogram.types import Message
+from pyrogram.types import LinkPreviewOptions, Message
 
 from ..core.client import app
 from ..core.config import config
@@ -23,14 +23,20 @@ async def start_cmd(client, message: Message):
 
     is_main = client.me.id == config.bot_id
     body = t("start_text", lang, bot_name=client.me.first_name, bot_username=client.me.username or "")
+    no_preview = LinkPreviewOptions(is_disabled=True)
 
     if is_main:
         await message.reply_text(
             body + t("clone_hint_text", lang),
             reply_markup=build_clone_keyboard(user, lang) if user else None,
+            link_preview_options=no_preview,
         )
     else:
-        await message.reply_text(body, reply_markup=keyboards.start_keyboard(client.me.username or "", lang))
+        await message.reply_text(
+            body,
+            reply_markup=keyboards.start_keyboard(client.me.username or "", lang),
+            link_preview_options=no_preview,
+        )
 
 
 @registry.on(MessageHandler, filters.command("privacy") & filters.private)
